@@ -32,7 +32,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   // Load character
   const { data: character } = await supabase
     .from("characters")
-    .select("id, name, persona, avatar_url, greeting, system_prompt")
+    .select("id, name, persona, avatar_url, greeting, system_prompt, is_active")
     .eq("id", params.characterId)
     .eq("is_active", true)
     .single();
@@ -51,12 +51,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
     .limit(50);
 
   return (
-    <ChatWindow
-      character={{
-        ...character,
-        // Don't send system_prompt to client
-        system_prompt: "",
-      }}
+  <ChatWindow
+    character={{
+      ...character,
+      system_prompt: "",
+      is_active: character.is_active ?? true,
+    }}
       initialMessages={messages || []}
       initialCredits={profile.credits}
     />
