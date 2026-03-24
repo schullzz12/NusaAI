@@ -1,4 +1,4 @@
-Set-Content "app/(main)/verify-age/page.tsx" -Encoding UTF8 -Value '"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -48,4 +48,4 @@ export default function VerifyAgePage() {
       </div>
     </div>
   );
-}'
+}
