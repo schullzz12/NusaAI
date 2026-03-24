@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/characters";
@@ -54,14 +54,12 @@ export default function LoginPage() {
           Masuk ke Akun
         </h2>
 
-        {/* Error */}
         {error && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-2.5 text-sm text-red-400">
             {error}
           </div>
         )}
 
-        {/* Email */}
         <div>
           <label className="block text-xs text-nusa-muted mb-1.5">Email</label>
           <input
@@ -74,11 +72,8 @@ export default function LoginPage() {
           />
         </div>
 
-        {/* Password */}
         <div>
-          <label className="block text-xs text-nusa-muted mb-1.5">
-            Password
-          </label>
+          <label className="block text-xs text-nusa-muted mb-1.5">Password</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -99,7 +94,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
@@ -110,16 +104,20 @@ export default function LoginPage() {
         </button>
       </div>
 
-      {/* Register link */}
       <p className="text-center text-sm text-nusa-muted">
         Belum punya akun?{" "}
-        <Link
-          href="/register"
-          className="text-nusa-primary hover:underline font-medium"
-        >
+        <Link href="/register" className="text-nusa-primary hover:underline font-medium">
           Daftar gratis
         </Link>
       </p>
     </form>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="text-center text-nusa-muted">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
